@@ -1,0 +1,1025 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Nunito", sans-serif;
+    user-select: none;
+}
+
+body {
+    background: #f5f5f5;
+    font-size: 18px;
+}
+
+$white: #fff;
+$orange: #ee980e;
+$dark-orange: #f57c00;
+$dark: #212121;
+$blue: #2196f3;
+$dark-blue: #175fa7;
+$silver: #e0e0e0;
+$silver-light: #efefef;
+$silver-dark: #888;
+$turquoise: #00bcd4;
+$green: #4caf50;
+$dark-green: #388e3c;
+
+$light-cyan: #d6fff6ff;
+$medium-turquoise: #4dccbdff;
+$russian-violet: #44444444;
+$french-blue: #685cfe;
+$light-coral: #fff;
+$size: 80px;
+$animation-duration: 2s;
+$black: #444;
+
+.none {
+    display: none !important;
+}
+
+.loading {
+    position: fixed;
+    z-index: 9999;
+    width: 100%;
+    height: 100vh;
+    background: #44444444;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .scene {
+        position: relative;
+        z-index: 2;
+        height: $size * 2.75;
+        width: $size * 2.75;
+        display: grid;
+        place-items: center;
+    }
+
+    .cube-wrapper {
+        transform-style: preserve-3d;
+        animation: bouncing $animation-duration infinite;
+    }
+
+    .cube {
+        transform-style: preserve-3d;
+        transform: rotateX(45deg) rotateZ(45deg);
+        animation: rotation $animation-duration infinite;
+    }
+
+    .cube-faces {
+        transform-style: preserve-3d;
+        height: $size;
+        width: $size;
+        position: relative;
+        transform-origin: 0 0;
+        transform: translateX(0) translateY(0) translateZ(-0.5 * $size);
+    }
+
+    .cube-face {
+        position: absolute;
+        inset: 0;
+        background: $russian-violet;
+        border: solid 1px $light-coral;
+        &.shadow {
+            transform: translateZ(-1 * $size);
+            animation: bouncing-shadow $animation-duration infinite;
+        }
+        &.top {
+            transform: translateZ($size);
+        }
+        &.front {
+            transform-origin: 0 50%;
+            transform: rotateY(-90deg);
+        }
+        &.back {
+            transform-origin: 0 50%;
+            transform: rotateY(-90deg) translateZ(-1 * $size);
+        }
+        &.right {
+            transform-origin: 50% 0;
+            transform: rotateX(-90deg) translateY(-1 * $size);
+        }
+        &.left {
+            transform-origin: 50% 0;
+            transform: rotateX(-90deg) translateY(-1 * $size) translateZ($size);
+        }
+    }
+
+    @keyframes rotation {
+        $start: 45deg;
+
+        0% {
+            transform: rotateX($start) rotateY(0) rotateZ($start);
+            animation-timing-function: cubic-bezier(0.17, 0.84, 0.44, 1);
+        }
+        50% {
+            transform: rotateX($start) rotateY(0) rotateZ($start + 180);
+            animation-timing-function: cubic-bezier(0.76, 0.05, 0.86, 0.06);
+        }
+        100% {
+            transform: rotateX($start) rotateY(0) rotateZ($start + 360);
+            animation-timing-function: cubic-bezier(0.17, 0.84, 0.44, 1);
+        }
+    }
+
+    @keyframes bouncing {
+        0% {
+            transform: translateY(-1 * $size * 0.5);
+            animation-timing-function: cubic-bezier(0.76, 0.05, 0.86, 0.06);
+        }
+
+        45% {
+            transform: translateY($size * 0.5);
+            animation-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        100% {
+            transform: translateY(-1 * $size * 0.5);
+            animation-timing-function: cubic-bezier(0.76, 0.05, 0.86, 0.06);
+        }
+    }
+
+    @keyframes bouncing-shadow {
+        0% {
+            transform: translateZ(-1 * $size) scale(1.3);
+            animation-timing-function: cubic-bezier(0.76, 0.05, 0.86, 0.06);
+            opacity: 0.05;
+        }
+
+        45% {
+            transform: translateZ(0);
+            animation-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
+            opacity: 0.3;
+        }
+
+        100% {
+            transform: translateZ(-1 * $size) scale(1.3);
+            animation-timing-function: cubic-bezier(0.76, 0.05, 0.86, 0.06);
+            opacity: 0.05;
+        }
+    }
+}
+
+.sub-page {
+    position: fixed;
+    width: 100%;
+    height: 100vh;
+    z-index: 999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    > .sub-container {
+        width: 100%;
+        max-width: 550px;
+        height: 100vh;
+        background-color: $white;
+    }
+}
+
+.container {
+    width: 100%;
+    max-width: 550px;
+    height: 100vh;
+    margin: 0 auto;
+    background-color: $white;
+    display: flex;
+    flex-flow: column;
+    justify-content: space-between;
+    position: relative;
+    > .body {
+        height: calc(100% - 70px);
+        overflow-y: auto;
+    }
+    > .menu {
+        height: 70px;
+        width: 100%;
+        background-color: $white;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 2px 0 0 rgba(0, 0, 0, 0.055) inset;
+        position: relative;
+        > .item {
+            width: 100%;
+            display: flex;
+            flex-flow: column;
+            justify-content: center;
+            align-items: center;
+            user-select: none;
+            > ion-icon {
+                font-size: 1.3em;
+                color: $silver-dark;
+            }
+            > label {
+                font-size: 0.8em;
+                color: $silver-dark;
+                user-select: none;
+            }
+            > .hexagon {
+                padding: 15px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                background-color: $orange;
+                border-radius: 50%;
+                > ion-icon {
+                    font-size: 1.1em;
+                    color: $white;
+                }
+            }
+            &.selected {
+                > ion-icon {
+                    color: $orange;
+                }
+                > label {
+                    color: $orange;
+                }
+            }
+        }
+    }
+}
+
+.box-container {
+    padding: 15px;
+    width: 100%;
+    position: relative;
+}
+
+.box-user {
+    width: 100%;
+    display: flex;
+    flex-flow: row nowrap;
+    gap: 15px;
+    > .avatar {
+        width: 70px;
+        height: 70px;
+        border-radius: 50%;
+        background-color: $orange;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        > img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            user-select: none;  
+        }
+    }
+    > .info {
+        display: flex;
+        flex-flow: column;
+        justify-content: center;
+        user-select: none;
+        > p {
+            font-size: 0.9em;
+            color: $dark-blue;
+        }
+        > .name {
+            font-size: 1em;
+            font-weight: 600;
+            color: $dark-blue;
+        }
+    }
+}
+
+.line-category {
+    width: 100%;
+    padding: 10px;
+    background-color: $silver-light;
+    border-radius: 5px;
+    margin: 20px 0;
+    color: $dark-blue;
+    font-size: 1em;
+    font-weight: 600;
+}
+
+.box-study {
+    width: 100%;
+    display: flex;
+    flex-flow: row wrap;
+    gap: 30px;
+    > .item {
+        width: calc(100% / 3 - 20px);
+        display: flex;
+        flex-flow: column;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        > img {
+            width: 40px;
+            height: 40px;
+            object-fit: cover;
+            border-radius: 5px;
+            user-select: none;
+        }
+        > p {
+            font-size: 0.9em;
+            color: $dark-blue;
+            text-align: center;
+            user-select: none;
+            height: 20px;
+        }
+    }
+}
+
+.pay-the-bill {
+    display: flex;
+    flex-flow: column;
+    border: 1px solid $silver;
+    border-radius: 5px;
+    overflow: hidden;
+    margin-top: 20px;
+    > .head {
+        display: flex;
+        flex-flow: row nowrap;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px;
+        border-bottom: 1px solid $silver;
+        background-color: $silver-light;
+        > .title {
+            font-size: 1em;
+            font-weight: 600;
+            color: $dark-blue;
+        }
+        > ion-icon {
+            font-size: 1.2em;
+            color: $dark-blue;
+            user-select: none;
+        }
+    }
+    > .info {
+        display: flex;
+        flex-flow: column;
+        padding: 10px;
+        gap: 10px;
+        > .row {
+            display: flex;
+            flex-flow: row nowrap;
+            justify-content: space-between;
+            > label {
+                font-size: 0.8em;
+                color: $silver-dark;
+            }
+            > span {
+                font-size: 0.9em;
+                color: $dark-blue;
+                font-weight: 600;
+            }
+        }
+    }
+}
+
+.box-information {
+    width: 100%;
+    > .head {
+        display: flex;
+        flex-flow: row nowrap;
+        justify-content: space-between;
+        padding: 20px;
+        position: relative;
+        .icon {
+            z-index: 1;
+            font-size: 1em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: $white;
+            border-radius: 40px;
+            width: 20px;
+            height: 20px;
+            > ion-icon {
+                font-size: 1em;
+                color: $dark-blue;
+            }
+        }
+        > #btn-logout {
+            z-index: 1;
+            color: $white;
+            font-size: 0.9em;
+        }
+        > .background {
+            background-color: $dark-blue;
+            height: 130px;
+            width: 100%;
+            position: absolute;
+            z-index: 0;
+            top: 0;
+            left: 0;
+            overflow: hidden;
+            > span {
+                position: absolute;
+                bottom: 50px;
+                &:first-child {
+                    left: 0;
+                    &::before {
+                        content: "";
+                        position: absolute;
+                        width: 100px;
+                        height: 100px;
+                        left: -50px;
+                        background-color: rgba(255, 255, 255, 0.856);
+                        border-radius: 10px;
+                    }
+                    &::after {
+                        content: "";
+                        position: absolute;
+                        width: 100px;
+                        height: 100px;
+                        top: 20px;
+                        left: -10px;
+                        background-color: rgba(255, 255, 255, 0.61);
+                        border-radius: 10px;
+                    }
+                }
+                &:last-child {
+                    right: 0;
+                    &::before {
+                        content: "";
+                        position: absolute;
+                        width: 100px;
+                        height: 100px;
+                        right: -50px;
+                        background-color: rgba(255, 255, 255, 0.856);
+                        border-radius: 10px;
+                    }
+                    &::after {
+                        content: "";
+                        position: absolute;
+                        width: 100px;
+                        height: 100px;
+                        top: 20px;
+                        right: -10px;
+                        background-color: rgba(255, 255, 255, 0.61);
+                        border-radius: 10px;
+                    }
+                }
+            }
+        }
+    }
+    > .border-avatar {
+        position: relative;
+        z-index: 2;
+        display: flex;
+        justify-content: center;
+        top: 10px;
+        background-color: $white;
+        padding: 3px;
+        border-radius: 50%;
+        width: 106px;
+        height: 106px;
+        margin: 0 auto;
+        > .avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background-color: $orange;
+            > img {
+                width: 100%;
+                height: 100%;
+                border-radius: 50%;
+                object-fit: cover;
+                user-select: none;
+            }
+        }
+    }
+    > .info {
+        margin-top: 20px;
+        padding: 10px;
+        > .title {
+            font-size: 1em;
+            font-weight: 600;
+            color: $dark-blue;
+        }
+        > .content {
+            display: flex;
+            flex-flow: column;
+            gap: 10px;
+            padding: 10px;
+            > .item {
+                display: flex;
+                flex-flow: row nowrap;
+                align-items: center;
+                gap: 5px;
+                background-color: $silver-light;
+                padding: 5px;
+                border-radius: 2px;
+                > ion-icon {
+                    width: 30px;
+                    font-size: 1em;
+                    color: $silver-dark;
+                }
+                > span {
+                    font-size: 0.9em;
+                    color: $dark-blue;
+                }
+            }
+        }
+    }
+}
+
+.box-history {
+    width: 100%;
+    > .title {
+        width: 100%;
+        padding: 10px;
+        text-align: center;
+        font-size: 1em;
+        font-weight: 600;
+        background-color: $silver-light;
+        height: 44px;
+    }
+    > .list {
+        display: flex;
+        flex-flow: column;
+        gap: 10px;
+        padding: 10px;
+        background-color: $white;
+        height: calc(100vh - 114px);
+        overflow-y: auto;
+        > .month {
+            width: 100%;
+            > .title {
+                font-size: 0.9em;
+                color: $white;
+                background-color: $orange;
+                font-weight: 600;
+                padding: 10px 15px;
+                border-radius: 5px;
+            }
+            > .transactions {
+                display: flex;
+                flex-flow: column;
+                gap: 10px;
+                margin-top: 10px;
+                > .transaction {
+                    display: flex;
+                    flex-flow: row nowrap;
+                    align-items: center;
+                    gap: 10px;
+                    padding: 10px 20px;
+                    border-radius: 5px;
+                    box-shadow: 0 0 2px 2px rgba(0, 0, 0, 0.055) inset;
+                    > .icon {
+                        width: 50px;
+                        height: 50px;
+                        border-radius: 50%;
+                        background-color: $silver-light;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        > img {
+                            width: 100%;
+                            height: 100%;
+                            border-radius: 50%;
+                            object-fit: cover;
+                            user-select: none;
+                        }
+                    }
+                    > .content {
+                        width: calc(100% - 60px);
+                        display: flex;
+                        flex-flow: column;
+                        justify-content: space-between;
+                        gap: 5px;
+                        > .description {
+                            display: flex;
+                            flex-flow: row nowrap;
+                            justify-content: space-between;
+                            > label {
+                                font-size: 0.8em;
+                                color: $dark;
+                            }
+                            > span {
+                                font-size: 0.8em;
+                                color: $green;
+                                font-weight: 600;
+                            }
+                        }
+                        > .time {
+                            display: flex;
+                            flex-flow: row nowrap;
+                            justify-content: space-between;
+                            > span {
+                                font-size: 0.7em;
+                                color: $dark;
+                            }
+                            > .status {
+                                background-color: lighten($color: $green, $amount: 45%);
+                                padding: 2px 7px;
+                                border-radius: 20px;
+                                display: flex;
+                                flex-flow: row nowrap;
+                                gap: 5px;
+                                align-items: center;
+                                justify-content: center;
+                                > .icon {
+                                    padding: 2px;
+                                    width: 15px;
+                                    height: 15px;
+                                    border-radius: 50%;
+                                    background-color: $green;
+                                    display: flex;
+                                    justify-content: center;
+                                    align-items: center;
+                                    > ion-icon {
+                                        font-size: 0.8em;
+                                        color: $white;
+                                    }
+                                }
+                                > label {
+                                    font-size: 0.7em;
+                                    color: $green;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+.box-notification {
+    width: 100%;
+    > .title {
+        width: 100%;
+        padding: 10px;
+        text-align: center;
+        font-size: 1em;
+        font-weight: 600;
+        background-color: $silver-light;
+        height: 44px;
+    }
+    > .list {
+        display: flex;
+        flex-flow: column;
+        padding: 10px;
+        background-color: $white;
+        height: calc(100vh - 114px);
+        overflow-y: auto;
+        > .item {
+            display: flex;
+            gap: 10px;
+            padding: 10px 20px;
+            &:not(:last-child) {
+                border-bottom: 1px solid $silver-light;
+            }
+            > .icon {
+                width: 50px;
+                height: 50px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                > img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                    user-select: none;
+                }
+            }
+            > .content {
+                display: flex;
+                flex-flow: column;
+                justify-content: space-between;
+                width: calc(100% - 60px);
+                > .time {
+                    display: flex;
+                    flex-flow: row nowrap;
+                    justify-content: space-between;
+                    > span {
+                        font-size: 0.8em;
+                        color: $silver-dark;
+                    }
+                    > label {
+                        font-size: 0.9em;
+                        color: $dark;
+                    }
+                }
+                > .description {
+                    font-size: 0.9em;
+                    color: $dark-blue;
+                    font-weight: 600;
+                }
+            }
+        }
+    }
+}
+
+.box-login {
+    width: 100%;
+    padding: 30px 20px;
+    > .header {
+        width: 100%;
+        display: flex;
+        flex-flow: column;
+        justify-content: center;
+        align-items: center;
+        > .logo {
+            height: 90px;
+            > img {
+                height: 100%;
+                object-fit: cover;
+                user-select: none;
+            }
+        }
+        > .content {
+            width: 100%;
+            display: flex;
+            flex-flow: column;
+            justify-content: center;
+            padding: 20px;
+            > h1 {
+                font-size: 1.5em;
+                color: $dark-blue;
+                font-weight: 600;
+                text-align: center;
+            }
+            > p {
+                font-size: 0.9em;
+                color: $silver-dark;
+                text-align: center;
+            }
+        }
+    }
+    > .login-form {
+        width: 100%;
+        display: flex;
+        flex-flow: column;
+        justify-content: center;
+        align-items: center;
+        gap: 15px;
+        padding: 40px;
+        border-radius: 5px;
+        box-shadow: 0 0 2px 2px rgba(0, 0, 0, 0.055) inset;
+        > .form-input {
+            display: flex;
+            flex-flow: row nowrap;
+            align-items: center;
+            width: 100%;
+            > .icon {
+                width: 45px;
+                height: 40px;
+                border-radius: 5px 0 0 5px;
+                background-color: $silver-light;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                > ion-icon {
+                    font-size: 1.2em;
+                    color: $silver-dark;
+                }
+            }
+            > input {
+                width: calc(100% - 45px);
+                height: 40px;
+                border-radius: 0 5px 5px 0;
+                border: 1px solid $silver-light;
+                padding: 5px 15px;
+                font-size: 0.9em;
+                color: $dark;
+                outline: none;
+            }
+        }
+        > .privacy-policy {
+            display: flex;
+            flex-flow: row nowrap;
+            align-items: center;
+            gap: 15px;
+            margin-top: 15px;
+            > input {
+                width: 20px;
+                height: 20px;
+                border-radius: 5px;
+                border: 1px solid $silver-light;
+                outline: none;
+            }
+            > label {
+                font-size: 0.8em;
+                color: $silver-dark;
+                > a {
+                    color: $orange;
+                    font-weight: 600;
+                }
+            }
+        }
+        > .form-button {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 15px;
+            > button {
+                padding: 5px 20px;
+                border-radius: 5px;
+                background-color: $blue;
+                cursor: pointer;
+                color: $white;
+                font-size: 0.9em;
+                border: none;
+                outline: none;
+                transition: all 0.3s ease-in-out;
+                &:hover {
+                    background-color: $dark-blue;
+                }
+            }
+        }
+    }
+}
+
+.box-payment {
+    display: flex;
+    flex-flow: column;
+    gap: 20px;
+    > .head {
+        display: flex;
+        flex-flow: row nowrap;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 20px;
+        background-color: $silver-light;
+        > h3 {
+            font-size: 1em;
+            font-weight: 600;
+            color: $dark-blue;
+        }
+        > .icon {
+            display: flex;
+            justify-content: center;
+            > ion-icon {
+                font-size: 1.2em;
+                color: $dark-blue;
+                user-select: none;
+            }
+        }
+        > button {
+            padding: 5px 20px;
+            border-radius: 5px;
+            background-color: $green;
+            cursor: pointer;
+            color: $white;
+            font-size: 0.8em;
+            border: none;
+            outline: none;
+            transition: all 0.3s ease-in-out;
+            &:hover {
+                background-color: $dark-green;
+            }
+        }
+    }
+    > .info {
+        padding: 20px;
+        > .title {
+            font-size: 1em;
+            font-weight: 600;
+            color: $dark-blue;
+            margin-bottom: 15px;
+        }
+        > .content {
+            display: flex;
+            flex-flow: column;
+            gap: 10px;
+            > .item {
+                display: flex;
+                flex-flow: row nowrap;
+                align-items: center;
+                gap: 5px;
+                background-color: $silver-light;
+                padding: 5px;
+                border-radius: 2px;
+                > ion-icon {
+                    width: 30px;
+                    font-size: 1em;
+                    color: $silver-dark;
+                }
+                > span {
+                    font-size: 0.9em;
+                    color: $dark-blue;
+                }
+            }
+            > .item-button {
+                display: flex;
+                flex-flow: row nowrap;
+                justify-content: center;
+                margin-top: 20px;
+                > #btn-payment {
+                    padding: 5px 20px;
+                    border-radius: 5px;
+                    background-color: $orange;
+                    text-decoration: none;
+                    cursor: pointer;
+                    color: $white;
+                    font-size: 0.9em;
+                    border: none;
+                    outline: none;
+                    transition: all 0.3s ease-in-out;
+                    &:hover {
+                        background-color: $dark-orange;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.table-manager {
+    width: 100%;
+    border-collapse: collapse;
+    > thead {
+        background-color: $black;
+        > tr {
+            border: 1px solid $silver-light;
+            > td {
+                padding: 10px;
+                text-align: center;
+                font-size: 0.9em;
+                color: $white;
+                &:first-child {
+                    width: 20px;
+                }
+                &:last-child {
+                    width: 100px;
+                }
+            }
+        }
+    }
+    > tbody {
+        border: 1px solid $silver-light;
+        > tr {
+            border: 1px solid $silver-light;
+            > td {
+                padding: 5px 10px;
+                text-align: center;
+                font-size: 0.8em;
+                color: $black;
+                &:first-child {
+                    width: 20px;
+                }
+                &:last-child {
+                    width: 100px;
+                }
+                > button {
+                    padding: 5px 10px;
+                    border-radius: 5px;
+                    background-color: $orange;
+                    cursor: pointer;
+                    color: $white;
+                    font-size: 0.8em;
+                    border: none;
+                    outline: none;
+                    transition: all 0.3s ease-in-out;
+                    &:hover {
+                        background-color: $dark-orange;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.information-student {
+    width: 100%;
+    display: flex;
+    flex-flow: column;
+    gap: 10px;
+    padding: 0 20px;
+    > .form-input {
+        display: flex;
+        flex-flow: column;
+        gap: 7px;
+        > label {
+            font-size: 0.8em;
+            color: $silver-dark;
+        }
+        > input, select {
+            width: 100%;
+            height: 40px;
+            border-radius: 5px;
+            border: 1px solid $silver-light;
+            padding: 5px 15px;
+            font-size: 0.9em;
+            color: $dark;
+            outline: none;
+        }
+    }
+    > .form-button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 15px;
+        > button {
+            padding: 5px 20px;
+            border-radius: 5px;
+            background-color: $blue;
+            cursor: pointer;
+            color: $white;
+            font-size: 0.9em;
+            border: none;
+            outline: none;
+            transition: all 0.3s ease-in-out;
+            &:hover {
+                background-color: $dark-blue;
+            }
+        }
+    }
+}
