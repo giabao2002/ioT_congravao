@@ -4,7 +4,6 @@ $(document).ready(function () {
     var CURRENT_LAYOUT = "home";
 
     callLayoutBody(CURRENT_LAYOUT);
-    callLayoutSub("create-student");
 
     toastr.options = {
         closeButton: true,

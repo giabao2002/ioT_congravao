@@ -13,7 +13,6 @@ $method = $_SERVER['REQUEST_METHOD'];
 if ($action == '') {
     response(false, 'Không tìm thấy action');
 }
-
 switch ($action) {
     case 'layout.get':
         if (!Auth::instance()->check()) {

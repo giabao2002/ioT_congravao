@@ -179,19 +179,20 @@ class Handle
             return redirect(DIR_URL);
         }
 
-        $amount = (int) $amount;
+        $amount = intval($amount);
 
         if (Auth::instance()->user()->id != $extraData) {
             notification('error', 'Người thanh toán không hợp lệ');
             return redirect(DIR_URL);
         }
 
-        $amount = Auth::instance()->user()->money - $amount;
-
-        Database::instance()->query("INSERT INTO transactions (user_id, money, transaction_id) VALUES ('" . Auth::instance()->user()->id . "', '" . $amount . "', '"+ $transId +"')");
-        Database::instance()->query("UPDATE users SET money = 0 WHERE id = '" . Auth::instance()->user()->id . "'");
+        Database::instance()->query("INSERT INTO transactions (user_id, money, transaction_id) VALUES ('" . Auth::instance()->user()->id . "', '" . $amount . "', '". $transId ."')");
         
-        notification('error', 'Thanh toán thành công');
+        $amount = Auth::instance()->user()->money - $amount;
+        
+        Database::instance()->query("UPDATE users SET money = '$amount' WHERE id = '" . Auth::instance()->user()->id . "'");
+        
+        notification('success', 'Thanh toán thành công');
         return redirect(DIR_URL);
     }
 
